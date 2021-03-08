@@ -341,17 +341,17 @@
                                       __typeof__( &( arg )[0] ) ) )
 /* A compile-time constant with the value 0. If `const_expr` is not a
  * compile-time constant with a nonzero value, cause a compile-time error. */
-#define STATIC_ASSERT_EXPR( const_expr )                                \
+#define MBEDTLS_STATIC_ASSERT_EXPR( const_expr ) \
     ( 0 && sizeof( struct { unsigned int STATIC_ASSERT : 1 - 2 * ! ( const_expr ); } ) )
 
 /* Return the scalar value `value` (possibly promoted). This is a compile-time
  * constant if `value` is. `condition` must be a compile-time constant.
  * If `condition` is false, arrange to cause a compile-time error. */
-#define STATIC_ASSERT_THEN_RETURN( condition, value )   \
-    ( STATIC_ASSERT_EXPR( condition ) ? 0 : ( value ) )
+#define MBEDTLS_STATIC_ASSERT_THEN_RETURN( condition, value ) \
+    ( MBEDTLS_STATIC_ASSERT_EXPR( condition ) ? 0 : ( value ) )
 
 #define ARRAY_LENGTH( array )                                           \
-    ( STATIC_ASSERT_THEN_RETURN( IS_ARRAY_NOT_POINTER( array ),         \
+    ( MBEDTLS_STATIC_ASSERT_THEN_RETURN( IS_ARRAY_NOT_POINTER( array ), \
                                  ARRAY_LENGTH_UNSAFE( array ) ) )
 
 #else
