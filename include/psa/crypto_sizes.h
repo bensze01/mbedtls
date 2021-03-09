@@ -117,7 +117,9 @@
  */
 #define PSA_MAC_MAX_SIZE PSA_HASH_MAX_SIZE
 
-/** The tag size for an AEAD algorithm, in bytes.
+/** \def PSA_AEAD_TAG_LENGTH
+ *
+ * The tag size for an AEAD algorithm, in bytes.
  *
  * \param alg                 An AEAD algorithm
  *                            (\c PSA_ALG_XXX value such that
@@ -129,10 +131,12 @@
  *                            the ciphertext, return 0.
  *                            If the AEAD algorithm is not recognized, return 0.
  */
+#if !defined(PSA_AEAD_TAG_LENGTH)
 #define PSA_AEAD_TAG_LENGTH(alg)                                        \
     (PSA_ALG_IS_AEAD(alg) ?                                             \
      (((alg) & PSA_ALG_AEAD_TAG_LENGTH_MASK) >> PSA_AEAD_TAG_LENGTH_OFFSET) : \
      0)
+#endif
 
 /** The maximum tag size for all supported AEAD algorithms, in bytes.
  *
@@ -234,7 +238,9 @@
      PSA_ALG_IS_BLOCK_CIPHER_MAC(alg) ? PSA_BLOCK_CIPHER_BLOCK_LENGTH(key_type) : \
      ((void)(key_type), (void)(key_bits), 0))
 
-/** The maximum size of the output of psa_aead_encrypt(), in bytes.
+/** \def PSA_AEAD_ENCRYPT_OUTPUT_SIZE
+ *
+ * The maximum size of the output of psa_aead_encrypt(), in bytes.
  *
  * If the size of the ciphertext buffer is at least this large, it is
  * guaranteed that psa_aead_encrypt() will not fail due to an
@@ -254,10 +260,12 @@
  *                            algorithm.
  *                            If the AEAD algorithm is not recognized, return 0.
  */
+#if !defined(PSA_AEAD_ENCRYPT_OUTPUT_SIZE)
 #define PSA_AEAD_ENCRYPT_OUTPUT_SIZE(alg, plaintext_length)       \
     (PSA_AEAD_TAG_LENGTH(alg) != 0 ?                              \
      (plaintext_length) + PSA_AEAD_TAG_LENGTH(alg) :              \
      0)
+#endif
 
 /** A sufficient output buffer size for psa_aead_encrypt(), for any of the
  *  supported key types and AEAD algorithms.
@@ -279,8 +287,9 @@
 #define PSA_AEAD_ENCRYPT_OUTPUT_MAX_SIZE(plaintext_length)          \
     ((plaintext_length) + PSA_AEAD_TAG_MAX_SIZE)
 
-
-/** The maximum size of the output of psa_aead_decrypt(), in bytes.
+/** \def PSA_AEAD_DECRYPT_OUTPUT_SIZE
+ *
+ * The maximum size of the output of psa_aead_decrypt(), in bytes.
  *
  * If the size of the plaintext buffer is at least this large, it is
  * guaranteed that psa_aead_decrypt() will not fail due to an
@@ -300,10 +309,12 @@
  *                            algorithm.
  *                            If the AEAD algorithm is not recognized, return 0.
  */
+#if !defined(PSA_AEAD_DECRYPT_OUTPUT_SIZE)
 #define PSA_AEAD_DECRYPT_OUTPUT_SIZE(alg, ciphertext_length)      \
     (PSA_AEAD_TAG_LENGTH(alg) != 0 ?                              \
      (ciphertext_length) - PSA_AEAD_TAG_LENGTH(alg) :             \
      0)
+#endif
 
 /** A sufficient output buffer size for psa_aead_decrypt(), for any of the
  *  supported key types and AEAD algorithms.
@@ -372,7 +383,9 @@
  */
 #define PSA_AEAD_NONCE_MAX_SIZE 13
 
-/** A sufficient output buffer size for psa_aead_update().
+/** \def PSA_AEAD_UPDATE_OUTPUT_SIZE
+ *
+ * A sufficient output buffer size for psa_aead_update().
  *
  * If the size of the output buffer is at least this large, it is
  * guaranteed that psa_aead_update() will not fail due to an
@@ -396,10 +409,12 @@
  * to emit output without delay. However, hardware may not always be
  * capable of this. So for modes based on a block cipher, allow the
  * implementation to delay the output until it has a full block. */
+#if !defined(PSA_AEAD_UPDATE_OUTPUT_SIZE)
 #define PSA_AEAD_UPDATE_OUTPUT_SIZE(alg, input_length)                              \
     (PSA_ALG_IS_AEAD_ON_BLOCK_CIPHER(alg) ?                                         \
      PSA_ROUND_UP_TO_MULTIPLE(PSA_BLOCK_CIPHER_BLOCK_MAX_SIZE, (input_length)) :    \
      (input_length))
+#endif
 
 /** A sufficient output buffer size for psa_aead_update(), for any of the
  *  supported key types and AEAD algorithms.
@@ -414,7 +429,9 @@
 #define PSA_AEAD_UPDATE_OUTPUT_MAX_SIZE(input_length)                           \
     (PSA_ROUND_UP_TO_MULTIPLE(PSA_BLOCK_CIPHER_BLOCK_MAX_SIZE, (input_length)))
 
-/** A sufficient ciphertext buffer size for psa_aead_finish().
+/** \def PSA_AEAD_FINISH_OUTPUT_SIZE
+ *
+ * A sufficient ciphertext buffer size for psa_aead_finish().
  *
  * If the size of the ciphertext buffer is at least this large, it is
  * guaranteed that psa_aead_finish() will not fail due to an
@@ -429,10 +446,12 @@
  *                            specified algorithm.
  *                            If the AEAD algorithm is not recognized, return 0.
  */
+#if !defined(PSA_AEAD_FINISH_OUTPUT_SIZE)
 #define PSA_AEAD_FINISH_OUTPUT_SIZE(alg)                                \
     (PSA_ALG_IS_AEAD_ON_BLOCK_CIPHER(alg) ?                             \
      PSA_BLOCK_CIPHER_BLOCK_MAX_SIZE :                                  \
      0)
+#endif
 
 /** A sufficient ciphertext buffer size for psa_aead_finish(), for any of the
  *  supported key types and AEAD algorithms.
@@ -441,7 +460,9 @@
  */
 #define PSA_AEAD_FINISH_OUTPUT_MAX_SIZE     (PSA_BLOCK_CIPHER_BLOCK_MAX_SIZE)
 
-/** A sufficient plaintext buffer size for psa_aead_verify().
+/** \def PSA_AEAD_VERIFY_OUTPUT_SIZE
+ *
+ * A sufficient plaintext buffer size for psa_aead_verify().
  *
  * If the size of the plaintext buffer is at least this large, it is
  * guaranteed that psa_aead_verify() will not fail due to an
@@ -456,10 +477,12 @@
  *                            specified algorithm.
  *                            If the AEAD algorithm is not recognized, return 0.
  */
+#if !defined(PSA_AEAD_VERIFY_OUTPUT_SIZE)
 #define PSA_AEAD_VERIFY_OUTPUT_SIZE(alg)                                \
     (PSA_ALG_IS_AEAD_ON_BLOCK_CIPHER(alg) ?                             \
      PSA_BLOCK_CIPHER_BLOCK_MAX_SIZE :                                  \
      0)
+#endif
 
 /** A sufficient plaintext buffer size for psa_aead_verify(), for any of the
  *  supported key types and AEAD algorithms.

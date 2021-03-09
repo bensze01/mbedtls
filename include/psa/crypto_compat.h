@@ -30,6 +30,8 @@
 #ifndef PSA_CRYPTO_COMPAT_H
 #define PSA_CRYPTO_COMPAT_H
 
+#include "mbedtls/platform_util.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -80,6 +82,16 @@ typedef MBEDTLS_PSA_DEPRECATED psa_algorithm_t mbedtls_deprecated_psa_algorithm_
 
 #define MBEDTLS_DEPRECATED_CONSTANT( type, value )      \
     ( (mbedtls_deprecated_##type) ( value ) )
+
+/* Helper macro for working around macro expansion behaviour in MSVC's traditional preprocessor */
+#define MBEDTLS_EXPAND( args ) args
+
+/*
+ * Helper macros for working with __VA_ARGS__
+ */
+#define MBEDTLS_ARG_4( _1, _2, _3, arg4, ... ) arg4
+
+#define MBEDTLS_ARGS_LEN( ... ) ( sizeof( (int[]){ 0, __VA_ARGS__ } ) / sizeof( int ) - 1 )
 
 /*
  * Deprecated PSA Crypto error code definitions (PSA Crypto API  <= 1.0 beta2)
@@ -291,6 +303,20 @@ MBEDTLS_PSA_DEPRECATED static inline psa_status_t psa_asymmetric_verify( psa_key
         ( (alg) & PSA_ALG_AEAD_TAG_LENGTH_MASK ) >> PSA_AEAD_TAG_LENGTH_OFFSET : \
         0 )
 
+#if defined(PSA_AEAD_TAG_LENGTH)
+#undef PSA_AEAD_TAG_LENGTH
+#endif
+
+#define PSA_AEAD_TAG_LENGTH( ... ) \
+    MBEDTLS_EXPAND( \
+        MBEDTLS_STATIC_ASSERT_THEN_RETURN( \
+            MBEDTLS_ARGS_LEN( __VA_ARGS__ ) <= 3, \
+            MBEDTLS_ARG_4( __VA_ARGS__, \
+                PSA_AEAD_TAG_LENGTH_3_ARG, \
+                PSA_AEAD_TAG_LENGTH_3_ARG, \
+                PSA_AEAD_TAG_LENGTH_1_ARG, \
+                PSA_AEAD_TAG_LENGTH_1_ARG )( __VA_ARGS__ ) ) )
+
 /** The maximum size of the output of psa_aead_encrypt(), in bytes.
  *
  * If the size of the ciphertext buffer is at least this large, it is
@@ -317,6 +343,19 @@ MBEDTLS_PSA_DEPRECATED static inline psa_status_t psa_asymmetric_verify( psa_key
         (plaintext_length) + PSA_AEAD_TAG_LENGTH( alg ) :           \
         0 )
 
+#if defined(PSA_AEAD_ENCRYPT_OUTPUT_SIZE)
+#undef PSA_AEAD_ENCRYPT_OUTPUT_SIZE
+#endif
+
+#define PSA_AEAD_ENCRYPT_OUTPUT_SIZE( ... ) \
+    MBEDTLS_EXPAND( \
+        MBEDTLS_STATIC_ASSERT_THEN_RETURN( \
+            MBEDTLS_ARGS_LEN( __VA_ARGS__ ) <= 3, \
+            MBEDTLS_ARG_4( __VA_ARGS__, \
+                PSA_AEAD_ENCRYPT_OUTPUT_SIZE_3_ARG, \
+                PSA_AEAD_ENCRYPT_OUTPUT_SIZE_2_ARG, \
+                PSA_AEAD_ENCRYPT_OUTPUT_SIZE_2_ARG )( __VA_ARGS__ ) ) )
+
 /** The maximum size of the output of psa_aead_decrypt(), in bytes.
  *
  * If the size of the plaintext buffer is at least this large, it is
@@ -342,6 +381,20 @@ MBEDTLS_PSA_DEPRECATED static inline psa_status_t psa_asymmetric_verify( psa_key
         PSA_AEAD_TAG_LENGTH( alg ) != 0 ?                            \
         (ciphertext_length) - PSA_AEAD_TAG_LENGTH( alg ) :           \
         0 )
+
+#if defined(PSA_AEAD_DECRYPT_OUTPUT_SIZE)
+#undef PSA_AEAD_DECRYPT_OUTPUT_SIZE
+#endif
+
+#define PSA_AEAD_DECRYPT_OUTPUT_SIZE( ... ) \
+    MBEDTLS_EXPAND( \
+        MBEDTLS_STATIC_ASSERT_THEN_RETURN( \
+            MBEDTLS_ARGS_LEN( __VA_ARGS__ ) <= 3, \
+            MBEDTLS_ARG_4( __VA_ARGS__, \
+                PSA_AEAD_DECRYPT_OUTPUT_SIZE_3_ARG, \
+                PSA_AEAD_DECRYPT_OUTPUT_SIZE_2_ARG, \
+                PSA_AEAD_DECRYPT_OUTPUT_SIZE_2_ARG )( __VA_ARGS__ ) ) )
+
 
 /** A sufficient output buffer size for psa_aead_update().
  *
@@ -373,6 +426,19 @@ MBEDTLS_PSA_DEPRECATED static inline psa_status_t psa_asymmetric_verify( psa_key
         PSA_ROUND_UP_TO_MULTIPLE( PSA_BLOCK_CIPHER_BLOCK_MAX_SIZE, (input_length) ) : \
         (input_length) )
 
+#if defined(PSA_AEAD_UPDATE_OUTPUT_SIZE)
+#undef PSA_AEAD_UPDATE_OUTPUT_SIZE
+#endif
+
+#define PSA_AEAD_UPDATE_OUTPUT_SIZE( ... ) \
+    MBEDTLS_EXPAND( \
+        MBEDTLS_STATIC_ASSERT_THEN_RETURN( \
+            MBEDTLS_ARGS_LEN( __VA_ARGS__ ) <= 3, \
+            MBEDTLS_ARG_4( __VA_ARGS__, \
+                PSA_AEAD_UPDATE_OUTPUT_SIZE_3_ARG, \
+                PSA_AEAD_UPDATE_OUTPUT_SIZE_2_ARG, \
+                PSA_AEAD_UPDATE_OUTPUT_SIZE_2_ARG )( __VA_ARGS__ ) ) )
+
 /** A sufficient ciphertext buffer size for psa_aead_finish().
  *
  * If the size of the ciphertext buffer is at least this large, it is
@@ -394,6 +460,20 @@ MBEDTLS_PSA_DEPRECATED static inline psa_status_t psa_asymmetric_verify( psa_key
         PSA_BLOCK_CIPHER_BLOCK_MAX_SIZE :                               \
         0 )
 
+#if defined(PSA_AEAD_FINISH_OUTPUT_SIZE)
+#undef PSA_AEAD_FINISH_OUTPUT_SIZE
+#endif
+
+#define PSA_AEAD_FINISH_OUTPUT_SIZE( ... ) \
+    MBEDTLS_EXPAND( \
+        MBEDTLS_STATIC_ASSERT_THEN_RETURN( \
+            MBEDTLS_ARGS_LEN( __VA_ARGS__ ) <= 2, \
+            MBEDTLS_ARG_4( __VA_ARGS__, \
+                PSA_AEAD_FINISH_OUTPUT_SIZE_2_ARG, \
+                PSA_AEAD_FINISH_OUTPUT_SIZE_2_ARG, \
+                PSA_AEAD_FINISH_OUTPUT_SIZE_1_ARG, \
+                PSA_AEAD_FINISH_OUTPUT_SIZE_1_ARG )( __VA_ARGS__ ) ) )
+
 /** A sufficient plaintext buffer size for psa_aead_verify().
  *
  * If the size of the plaintext buffer is at least this large, it is
@@ -414,6 +494,20 @@ MBEDTLS_PSA_DEPRECATED static inline psa_status_t psa_asymmetric_verify( psa_key
         PSA_ALG_IS_AEAD_ON_BLOCK_CIPHER( alg ) ?                        \
         PSA_BLOCK_CIPHER_BLOCK_MAX_SIZE :                               \
         0 )
+
+#if defined(PSA_AEAD_VERIFY_OUTPUT_SIZE)
+#undef PSA_AEAD_VERIFY_OUTPUT_SIZE
+#endif
+
+#define PSA_AEAD_VERIFY_OUTPUT_SIZE( ... ) \
+    MBEDTLS_EXPAND( \
+        MBEDTLS_STATIC_ASSERT_THEN_RETURN( \
+            MBEDTLS_ARGS_LEN( __VA_ARGS__ ) <= 2, \
+            MBEDTLS_ARG_4( __VA_ARGS__, \
+                PSA_AEAD_VERIFY_OUTPUT_SIZE_2_ARG, \
+                PSA_AEAD_VERIFY_OUTPUT_SIZE_2_ARG, \
+                PSA_AEAD_VERIFY_OUTPUT_SIZE_1_ARG, \
+                PSA_AEAD_VERIFY_OUTPUT_SIZE_1_ARG )( __VA_ARGS__ ) ) )
 
 #endif /* MBEDTLS_DEPRECATED_REMOVED */
 
