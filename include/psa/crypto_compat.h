@@ -91,7 +91,17 @@ typedef MBEDTLS_PSA_DEPRECATED psa_algorithm_t mbedtls_deprecated_psa_algorithm_
  */
 #define MBEDTLS_ARG_4( _1, _2, _3, arg4, ... ) arg4
 
-#define MBEDTLS_ARGS_LEN( ... ) ( sizeof( (int[]){ 0, __VA_ARGS__ } ) / sizeof( int ) - 1 )
+#define MBEDTLS_TAIL_3_STR_SIZE( _1, _2, _3, ...) ( sizeof( #__VA_ARGS__ ) )
+
+/* Return a compile-time constant count of the arguments passed to this macro
+ *
+ * WARNING: This macro only returns an accurate ARG len for 1 <= n <= 3
+ *          arguments. For n > 3 arguments, it returns a number that is greater
+ *          than or equal to n.
+ *          If you need accurate counts for a larger n, you will have to adjust
+ *          its definition. */
+#define MBEDTLS_ARGS_LEN( ... ) \
+    MBEDTLS_EXPAND( MBEDTLS_TAIL_3_STR_SIZE( __VA_ARGS__,,, ) )
 
 /*
  * Deprecated PSA Crypto error code definitions (PSA Crypto API  <= 1.0 beta2)
