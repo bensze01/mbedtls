@@ -4037,7 +4037,7 @@ static psa_status_t psa_aead_setup( aead_operation_t *operation,
         status = PSA_ERROR_INVALID_ARGUMENT;
         goto cleanup;
     }
-    operation->tag_length = PSA_AEAD_TAG_LENGTH( alg );
+    operation->tag_length = (uint8_t) PSA_AEAD_TAG_LENGTH( alg );
 
     return( PSA_SUCCESS );
 
