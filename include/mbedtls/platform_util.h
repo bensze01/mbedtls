@@ -132,10 +132,19 @@ MBEDTLS_DEPRECATED typedef int mbedtls_deprecated_numeric_constant_t;
 #endif /* MBEDTLS_DEPRECATED_WARNING */
 #endif /* MBEDTLS_DEPRECATED_REMOVED */
 
+#if defined(_MSC_VER)
+#define MBEDTLS_MSVC_PRAGMA(x) __pragma(x)
+#else
+#define MBEDTLS_MSVC_PRAGMA(x)
+#endif
+
 /* A compile-time constant with the value 0. If `const_expr` is not a
  * compile-time constant with a nonzero value, cause a compile-time error. */
 #define MBEDTLS_STATIC_ASSERT_EXPR( const_expr ) \
-    ( 0 && sizeof( struct { unsigned int STATIC_ASSERT : 1 - 2 * ! ( const_expr ); } ) )
+    MBEDTLS_MSVC_PRAGMA(warning(push)) \
+    MBEDTLS_MSVC_PRAGMA(warning(disable:4116)) \
+    ( 0 && sizeof( struct { unsigned int STATIC_ASSERT : 1 - 2 * ! ( const_expr ); } ) ) \
+    MBEDTLS_MSVC_PRAGMA(warning(pop))
 
 /* Return the scalar value `value` (possibly promoted). This is a compile-time
  * constant if `value` is. `condition` must be a compile-time constant.
