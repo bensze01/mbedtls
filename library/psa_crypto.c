@@ -4032,12 +4032,16 @@ static psa_status_t psa_aead_setup( aead_operation_t *operation,
             goto cleanup;
     }
 
-    if( PSA_AEAD_TAG_LENGTH( alg ) > operation->full_tag_length )
+    if( PSA_AEAD_TAG_LENGTH( operation->slot->attr.type,
+                             operation->slot->attr.bits, alg )
+        > operation->full_tag_length )
     {
         status = PSA_ERROR_INVALID_ARGUMENT;
         goto cleanup;
     }
-    operation->tag_length = (uint8_t) PSA_AEAD_TAG_LENGTH( alg );
+    operation->tag_length = PSA_AEAD_TAG_LENGTH(operation->slot->attr.type,
+                                                operation->slot->attr.bits,
+                                                alg );
 
     return( PSA_SUCCESS );
 
