@@ -143,7 +143,7 @@
 #define PSA_AEAD_TAG_LENGTH_3_ARG(key_type, key_bits, alg)                  \
     (PSA_AEAD_NONCE_LENGTH(key_type, alg) ?                                 \
      ((alg) & PSA_ALG_AEAD_TAG_LENGTH_MASK) >> PSA_AEAD_TAG_LENGTH_OFFSET : \
-     0)
+     ((void) (key_bits), 0))
 
 #if !defined(PSA_AEAD_TAG_LENGTH)
 #define PSA_AEAD_TAG_LENGTH(key_type, key_bits, alg) \
