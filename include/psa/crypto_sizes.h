@@ -142,7 +142,7 @@
  */
 #define PSA_AEAD_TAG_LENGTH_3_ARG(key_type, key_bits, alg)                  \
     (PSA_AEAD_NONCE_LENGTH(key_type, alg) ?                                 \
-     ((alg) & PSA_ALG_AEAD_TAG_LENGTH_MASK) >> PSA_AEAD_TAG_LENGTH_OFFSET : \
+     PSA_ALG_AEAD_GET_TAG_LENGTH(alg) :                                     \
      ((void) (key_bits), 0))
 
 #if !defined(PSA_AEAD_TAG_LENGTH)
@@ -280,7 +280,7 @@
  */
 #define PSA_AEAD_ENCRYPT_OUTPUT_SIZE_3_ARG(key_type, alg, plaintext_length) \
     (PSA_AEAD_NONCE_LENGTH(key_type, alg) ?                                 \
-     (plaintext_length) + PSA_AEAD_TAG_LENGTH(key_type, 0, alg) :           \
+     (plaintext_length) + PSA_ALG_AEAD_GET_TAG_LENGTH(alg) :                \
      0)
 
 #if !defined(PSA_AEAD_ENCRYPT_OUTPUT_SIZE)
@@ -339,7 +339,7 @@
  */
 #define PSA_AEAD_DECRYPT_OUTPUT_SIZE_3_ARG(key_type, alg, ciphertext_length) \
     (PSA_AEAD_NONCE_LENGTH(key_type, alg) ?                                  \
-     (ciphertext_length) - PSA_AEAD_TAG_LENGTH(key_type, 0, alg) :           \
+     (ciphertext_length) - PSA_ALG_AEAD_GET_TAG_LENGTH(alg) :                \
      0)
 
 #if !defined(PSA_AEAD_DECRYPT_OUTPUT_SIZE)
@@ -395,14 +395,11 @@
  */
 #define PSA_AEAD_NONCE_LENGTH(key_type, alg) \
     (PSA_BLOCK_CIPHER_BLOCK_LENGTH(key_type) == 16 ? \
-          PSA_ALG_AEAD_WITH_SHORTENED_TAG(alg, 0) == \
-              PSA_ALG_AEAD_WITH_SHORTENED_TAG(PSA_ALG_CCM, 0) ? 13 : \
-          PSA_ALG_AEAD_WITH_SHORTENED_TAG(alg, 0) == \
-              PSA_ALG_AEAD_WITH_SHORTENED_TAG(PSA_ALG_GCM, 0) ? 12 : \
+          PSA_ALG_AEAD_IS_BASE_EQUAL(alg, PSA_ALG_CCM) ? 13 : \
+          PSA_ALG_AEAD_IS_BASE_EQUAL(alg, PSA_ALG_GCM) ? 12 : \
           0 : \
      (key_type) == PSA_KEY_TYPE_CHACHA20 && \
-          PSA_ALG_AEAD_WITH_SHORTENED_TAG(alg, 0) == \
-              PSA_ALG_AEAD_WITH_SHORTENED_TAG(PSA_ALG_CHACHA20_POLY1305, 0) ? 12 : \
+          PSA_ALG_AEAD_IS_BASE_EQUAL(alg, PSA_ALG_CHACHA20_POLY1305) ? 12 : \
      0)
 
 /** The maximum default nonce size among all supported pairs of key types and
