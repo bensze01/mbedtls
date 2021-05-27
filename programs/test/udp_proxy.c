@@ -25,11 +25,7 @@
 
 #define MBEDTLS_ALLOW_PRIVATE_ACCESS
 
-#if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
-#else
-#include MBEDTLS_CONFIG_FILE
-#endif
+#include "mbedtls/mbedtls_config.h"
 
 #if defined(MBEDTLS_PLATFORM_C)
 #include "mbedtls/platform.h"

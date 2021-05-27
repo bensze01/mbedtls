@@ -20,11 +20,7 @@
 #ifndef MBEDTLS_PROGRAMS_TEST_QUERY_CONFIG_H
 #define MBEDTLS_PROGRAMS_TEST_QUERY_CONFIG_H
 
-#if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
-#else
-#include MBEDTLS_CONFIG_FILE
-#endif
+#include "mbedtls/mbedtls_config.h"
 
 /** Check whether a given configuration symbol is enabled.
  *
