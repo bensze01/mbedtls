@@ -22,11 +22,7 @@
 #ifndef MBEDTLS_X509_CRT_H
 #define MBEDTLS_X509_CRT_H
 
-#if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
-#else
-#include MBEDTLS_CONFIG_FILE
-#endif
+#include "mbedtls/mbedtls_config.h"
 
 #include "mbedtls/x509.h"
 #include "mbedtls/x509_crl.h"

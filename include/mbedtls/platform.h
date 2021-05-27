@@ -31,11 +31,7 @@
 #ifndef MBEDTLS_PLATFORM_H
 #define MBEDTLS_PLATFORM_H
 
-#if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
-#else
-#include MBEDTLS_CONFIG_FILE
-#endif
+#include "mbedtls/mbedtls_config.h"
 
 #if defined(MBEDTLS_HAVE_TIME)
 #include "mbedtls/platform_time.h"

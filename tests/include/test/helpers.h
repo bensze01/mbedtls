@@ -25,11 +25,7 @@
 #ifndef TEST_HELPERS_H
 #define TEST_HELPERS_H
 
-#if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
-#else
-#include MBEDTLS_CONFIG_FILE
-#endif
+#include "mbedtls/mbedtls_config.h"
 
 #if defined(MBEDTLS_THREADING_C) && defined(MBEDTLS_THREADING_PTHREAD) && \
     defined(MBEDTLS_TEST_HOOKS)

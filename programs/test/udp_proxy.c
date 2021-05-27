@@ -23,11 +23,7 @@
  * example of good general usage.
  */
 
-#if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
-#else
-#include MBEDTLS_CONFIG_FILE
-#endif
+#include "mbedtls/mbedtls_config.h"
 
 #if defined(MBEDTLS_PLATFORM_C)
 #include "mbedtls/platform.h"

@@ -27,11 +27,7 @@
 #ifndef MBEDTLS_DES_H
 #define MBEDTLS_DES_H
 
-#if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
-#else
-#include MBEDTLS_CONFIG_FILE
-#endif
+#include "mbedtls/mbedtls_config.h"
 
 #include <stddef.h>
 #include <stdint.h>

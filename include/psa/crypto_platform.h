@@ -35,11 +35,7 @@
 
 /* Include the Mbed TLS configuration file, the way Mbed TLS does it
  * in each of its header files. */
-#if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
-#else
-#include MBEDTLS_CONFIG_FILE
-#endif
+#include "mbedtls/mbedtls_config.h"
 
 /* Translate between classic MBEDTLS_xxx feature symbols and PSA_xxx
  * feature symbols. */

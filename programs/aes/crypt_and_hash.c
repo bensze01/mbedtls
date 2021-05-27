@@ -23,11 +23,7 @@
  * Harmless on other platforms. */
 #define _POSIX_C_SOURCE 200112L
 
-#if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
-#else
-#include MBEDTLS_CONFIG_FILE
-#endif
+#include "mbedtls/mbedtls_config.h"
 
 #if defined(MBEDTLS_PLATFORM_C)
 #include "mbedtls/platform.h"

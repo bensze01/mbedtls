@@ -23,11 +23,7 @@
 #ifndef MBEDTLS_PK_WRAP_H
 #define MBEDTLS_PK_WRAP_H
 
-#if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
-#else
-#include MBEDTLS_CONFIG_FILE
-#endif
+#include "mbedtls/mbedtls_config.h"
 
 #include "mbedtls/pk.h"
 

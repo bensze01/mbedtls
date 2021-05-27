@@ -32,11 +32,7 @@
 #ifndef MBEDTLS_CHACHAPOLY_H
 #define MBEDTLS_CHACHAPOLY_H
 
-#if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
-#else
-#include MBEDTLS_CONFIG_FILE
-#endif
+#include "mbedtls/mbedtls_config.h"
 
 /* for shared error codes */
 #include "mbedtls/poly1305.h"

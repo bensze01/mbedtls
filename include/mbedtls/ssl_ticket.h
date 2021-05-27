@@ -22,11 +22,7 @@
 #ifndef MBEDTLS_SSL_TICKET_H
 #define MBEDTLS_SSL_TICKET_H
 
-#if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
-#else
-#include MBEDTLS_CONFIG_FILE
-#endif
+#include "mbedtls/mbedtls_config.h"
 
 /*
  * This implementation of the session ticket callbacks includes key

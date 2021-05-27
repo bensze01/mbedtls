@@ -22,11 +22,7 @@
 #ifndef MBEDTLS_THREADING_H
 #define MBEDTLS_THREADING_H
 
-#if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
-#else
-#include MBEDTLS_CONFIG_FILE
-#endif
+#include "mbedtls/mbedtls_config.h"
 
 #include <stdlib.h>
 
