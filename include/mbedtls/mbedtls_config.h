@@ -4,7 +4,7 @@
  * \brief Configuration options (includable header)
  *
  *  Include this file if you need to depend on the
- *  configuration options defined in config.h
+ *  configuration options defined in mbedtls_config_defines.h
  */
  /*
   *  Copyright The Mbed TLS Contributors
@@ -31,7 +31,7 @@
 #endif
 
 #if !defined(MBEDTLS_CONFIG_FILE)
-#include "mbedtls/config.h"
+#include "mbedtls/mbedtls_config_defines.h"
 #else
 #include MBEDTLS_CONFIG_FILE
 #endif

@@ -51,7 +51,7 @@ close(FORMAT_FILE);
 
 $/ = $line_separator;
 
-open(CONFIG_H, '<:crlf', "$include_dir/config.h") || die("Failure when opening config.h: $!");
+open(CONFIG_H, '<:crlf', "$include_dir/mbedtls_config_defines.h") || die("Failure when opening mbedtls_config_defines.h: $!");
 
 my $feature_defines = "";
 my $in_section = 0;
