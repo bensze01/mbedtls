@@ -89,7 +89,7 @@ extern "C" {
  *   changing the numerical value for existing curves.
  * - Increment MBEDTLS_ECP_DP_MAX below if needed.
  * - Add the corresponding MBEDTLS_ECP_DP_xxx_ENABLED macro definition to
- *   config.h.
+ *   mbedtls_config_defines.h.
  * - List the curve as a dependency of MBEDTLS_ECP_C and
  *   MBEDTLS_ECDSA_C if supported in check_config.h.
  * - Add the curve to the appropriate curve type macro
@@ -233,7 +233,7 @@ mbedtls_ecp_group;
  * \name SECTION: Module settings
  *
  * The configuration options you can set for this module are in this section.
- * Either change them in config.h, or define them using the compiler command line.
+ * Either change them in mbedtls_config_defines.h, or define them using the compiler command line.
  * \{
  */
 

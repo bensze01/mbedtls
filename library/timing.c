@@ -35,7 +35,7 @@
 #if !defined(unix) && !defined(__unix__) && !defined(__unix) && \
     !defined(__APPLE__) && !defined(_WIN32) && !defined(__QNXNTO__) && \
     !defined(__HAIKU__) && !defined(__midipix__)
-#error "This module only works on Unix and Windows, see MBEDTLS_TIMING_C in config.h"
+#error "This module only works on Unix and Windows, see MBEDTLS_TIMING_C in mbedtls_config_defines.h"
 #endif
 
 #ifndef asm
