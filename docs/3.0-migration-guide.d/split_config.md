@@ -5,9 +5,9 @@ Introduce a level of indirection and versioning in the config files
 `mbedtls_config.h` is intended to be included from C code directly, while
 `mbedtls_config_defines.h` is intended to be edited by end users whishing to
 change the build configuration, and should generally only be included from
-`mbedtls_config_defines.h`. This is because all the preprocessor logic has been
-moved into `mbedtls_config.h`, including the handling of the
-`MBEDTLS_CONFIG_FILE` macro.
+`mbedtls_config.h`. This is because all the preprocessor logic has been moved
+into `mbedtls_config.h`, including the handling of the `MBEDTLS_CONFIG_FILE`
+macro.
 
 Mandatory version symbols were introduced for `MBEDTLS_CONFIG_FILE` and
 `MBEDTLS_USER_CONFIG_FILE`, `MBEDTLS_CONFIG_VERSION` and
