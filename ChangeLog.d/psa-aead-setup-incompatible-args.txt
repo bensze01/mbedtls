@@ -1,0 +1,4 @@
+Bugfix
+   * Return PSA_ERROR_INVALID_ARGUMENT instead of PSA_ERROR_NOT_SUPPORTED if
+     the key and algorithm provided to psa_aead_encrypt_setup() or
+     psa_aead_decrypt_setup() are incompatible with each other. Fixes #5243.

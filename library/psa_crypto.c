@@ -3809,6 +3809,12 @@ static psa_status_t psa_aead_setup( psa_aead_operation_t *operation,
     if( status != PSA_SUCCESS )
         goto exit;
 
+    if( PSA_AEAD_NONCE_LENGTH( slot->attr.type, alg ) == 0 )
+    {
+        status = PSA_ERROR_INVALID_ARGUMENT;
+        goto exit;
+    }
+
     psa_key_attributes_t attributes = {
         .core = slot->attr
     };
