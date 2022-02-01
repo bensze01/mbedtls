@@ -66,16 +66,12 @@ programs: lib mbedtls_test
 
 lib: library/all
 
-tests: lib mbedtls_test
-	$(MAKE) -C tests
+tests: tests/all
 
-mbedtls_test:
-	$(MAKE) -C tests mbedtls_test
+mbedtls_test: tests/mbedtls_test
 
 programs/%:
 	$(MAKE) -C programs $*
-tests/%:
-	$(MAKE) -C tests $*
 
 .c.o:
 	echo "  CC    $<"
@@ -160,9 +156,8 @@ ifndef WINDOWS
 
 endif
 
-clean: library/clean clean_more_on_top
+clean: library/clean tests/clean clean_more_on_top
 	$(MAKE) -C programs clean
-	$(MAKE) -C tests clean
 
 clean_more_on_top:
 ifndef WINDOWS
@@ -179,8 +174,7 @@ else
 	if exist visualc\VS2010\mbedTLS.sln del /Q /F visualc\VS2010\mbedTLS.sln
 endif
 
-check: lib tests
-	$(MAKE) -C tests check
+check: tests/check
 
 test: check
 
@@ -237,3 +231,4 @@ cscope.in.out cscope.po.out cscope.out: $(C_SOURCE_FILES)
 .PHONY: cscope global
 
 include library/Makefile.inc
+include tests/Makefile
