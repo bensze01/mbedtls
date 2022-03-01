@@ -45,9 +45,9 @@ EXPECTED_FAILURES = {
 # Once all the fixes are upstreamed, this fork should be replaced with an upstream commit/tag.
 # - Tracked in issue #5145
 #
-# Web URL: https://github.com/bensze01/psa-arch-tests/tree/fixes-for-mbedtls-3
-PSA_ARCH_TESTS_REPO = 'https://github.com/bensze01/psa-arch-tests.git'
-PSA_ARCH_TESTS_REF = 'fix-pr-5272'
+# Web URL: https://github.com/ARM-software/psa-arch-tests
+PSA_ARCH_TESTS_REPO = 'https://github.com/ARM-software/psa-arch-tests.git'
+PSA_ARCH_TESTS_REF = 'main'
 
 #pylint: disable=too-many-branches,too-many-statements
 def main():
