@@ -95,6 +95,7 @@ class Requirements:
             req_file_name = os.path.join(temp_dir, 'requirements.txt')
             with open(req_file_name, 'w') as req_file:
                 self.write(req_file)
+            subprocess.check_call([sys.executable, '-m', 'pip', '--version'])
             subprocess.check_call([sys.executable, '-m', 'pip'] +
                                   pip_general_options +
                                   ['install'] + pip_install_options +
