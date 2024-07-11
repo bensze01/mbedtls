@@ -200,6 +200,7 @@ pre_initialize_variables () {
     : ${ARM_NONE_EABI_GCC_PREFIX:=arm-none-eabi-}
     : ${ARM_LINUX_GNUEABI_GCC_PREFIX:=arm-linux-gnueabi-}
     : ${ARM_LINUX_GNUEABIHF_GCC_PREFIX:=arm-linux-gnueabihf-}
+    : ${AARCH64_LINUX_GNU_GCC_PREFIX:=aarch64-linux-gnu-}
     : ${CLANG_LATEST:="clang-latest"}
     : ${CLANG_EARLIEST:="clang-earliest"}
     : ${GCC_LATEST:="gcc-latest"}
@@ -895,6 +896,15 @@ clang_version() {
     fi
 }
 
+gcc_version() {
+    cc="$1"
+    if command -v clang > /dev/null ; then
+        "$cc" --version | sed -En '1s/^[^ ]* \([^)]*\) ([0-9]+).*/\1/p'
+    else
+        echo 0  # report version 0 for "no clang"
+    fi
+}
+
 can_run_cc_output() {
     cc="$1"
     result=1
@@ -930,6 +940,17 @@ can_run_arm_linux_gnueabihf () {
         fi
     fi
     return $((! can_run_arm_linux_gnueabihf))
+}
+
+can_run_aarch64_linux_gnu () {
+    if [ -z "${can_run_aarch64_linux_gnu:-}" ]; then
+        if can_run_cc_output "${AARCH64_LINUX_GNU_GCC_PREFIX}gcc"; then
+            can_run_aarch64_linux_gnu=1
+        else
+            can_run_aarch64_linux_gnu=0
+        fi
+    fi
+    return $((! can_run_aarch64_linux_gnu))
 }
 
 ################################################################
