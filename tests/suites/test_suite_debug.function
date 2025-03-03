@@ -18,6 +18,8 @@
 #   define MBEDTLS_MS_TIME_SIZE sizeof(int64_t)
 #endif
 
+char test_msg[MBEDTLS_TEST_LINE_LENGTH * 3];
+
 struct buffer_data {
     char buf[2000];
     char *ptr;
@@ -105,17 +107,42 @@ void printf_int_expr(intmax_t smuggle_format_expr, /* TODO: teach test framework
 
     /* Nominal case: buffer just large enough */
     TEST_CALLOC(output, n + 1);
+
+    int retval;
     if ((size_t) sizeof_x <= sizeof(int)) { // Any smaller integers would be promoted to an int due to calling a vararg function
-        TEST_EQUAL(n, mbedtls_snprintf(output, n + 1, format, (int) x));
+        retval = mbedtls_snprintf(output, n + 1, format, (int) x);
     } else if (sizeof_x == sizeof(long)) {
-        TEST_EQUAL(n, mbedtls_snprintf(output, n + 1, format, (long) x));
+        retval = mbedtls_snprintf(output, n + 1, format, (long) x);
     } else if (sizeof_x == sizeof(long long)) {
-        TEST_EQUAL(n, mbedtls_snprintf(output, n + 1, format, (long long) x));
+        retval = mbedtls_snprintf(output, n + 1, format, (long long) x);
     } else {
         TEST_FAIL(
             "sizeof_x <= sizeof(int) || sizeof_x == sizeof(long) || sizeof_x == sizeof(long long)");
     }
-    TEST_MEMORY_COMPARE(result, n + 1, output, n + 1);
+
+    if (retval != (int) n || memcmp(output, result, n) != 0) {
+        int written = mbedtls_snprintf(
+            test_msg, sizeof(test_msg) - 1,
+            "mbedtls_snprintf(buf, %lld, \"%s\", %lld) == %lld && strcmp(buf, \"%s\")\n  mbedtls_snprint(...) = %d",
+            (long long) n + 1, format, (long long) x, (long long) n, result, retval);
+        written += mbedtls_snprintf(test_msg + written, sizeof(test_msg) - written - 1, "\n  buf = \"\"") - 1;
+        if (retval == -1) {
+            if ((size_t) sizeof_x <= sizeof(int)) {
+                retval = mbedtls_snprintf(test_msg + written, sizeof(test_msg) - written - 1, format, (int) x);
+            } else if (sizeof_x == sizeof(long)) {
+                retval = mbedtls_snprintf(test_msg + written, sizeof(test_msg) - written - 1, format, (long) x);
+            } else if (sizeof_x == sizeof(long long)) {
+                retval = mbedtls_snprintf(test_msg + written, sizeof(test_msg) - written - 1, format, (long long) x);
+            }
+            if (retval != -1) {
+                written += retval;
+                written += mbedtls_snprintf(test_msg + written, sizeof(test_msg) - written - 1, "\"");
+            }
+        } else {
+            written += mbedtls_snprintf(test_msg + written, sizeof(test_msg) - written - 1, "%s\"", output);
+        }
+        TEST_FAIL(test_msg);
+    }
 
 exit:
     mbedtls_free(output);
