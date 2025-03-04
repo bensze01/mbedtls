@@ -564,3 +564,7 @@ if(NOT DISABLE_PACKAGE_CONFIG_AND_INSTALL)
         export(PACKAGE MbedTLS)
     endif()
 endif()
+
+execute_process(COMMAND "${CMAKE_C_COMPILER}" --version)
+file(TOUCH "${CMAKE_CURRENT_BINARY_DIR}/empty.c")
+execute_process(COMMAND "${CMAKE_C_COMPILER}" "${CMAKE_C_FLAGS}" -x c empty.c -dM -E WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}")
