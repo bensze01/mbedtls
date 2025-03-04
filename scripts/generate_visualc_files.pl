@@ -44,7 +44,6 @@ my @thirdparty_header_dirs = qw(
 my @thirdparty_source_dirs = qw(
     tf-psa-crypto/drivers/everest/library
     tf-psa-crypto/drivers/everest/library/kremlib
-    tf-psa-crypto/drivers/everest/library/legacy
 );
 
 # Directories to add to the include path.
@@ -54,9 +53,8 @@ my @include_directories = qw(
     include
     tf-psa-crypto/include
     tf-psa-crypto/drivers/builtin/include
-    tf-psa-crypto/drivers/everest/include/
+    tf-psa-crypto/drivers/everest/include
     tf-psa-crypto/drivers/everest/include/everest
-    tf-psa-crypto/drivers/everest/include/everest/vs2013
     tf-psa-crypto/drivers/everest/include/everest/kremlib
     tests/include
     framework/tests/include
